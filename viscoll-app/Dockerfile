@@ -5,6 +5,9 @@ RUN apt-get update && \
     apt-get install -y curl tzdata build-essential libssl-dev libreadline-dev wget && \
     apt-get clean
 
+RUN mkdir /app
+COPY . /app
+
 # Install nodejs
 RUN curl -sL https://deb.nodesource.com/setup_10.x  | bash -
 RUN apt-get install -y nodejs && apt-get clean
