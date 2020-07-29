@@ -2,11 +2,11 @@ version: '3.7'
 
 services:
   api:
-    build: .
+    build: ./viscoll-api
     image: viscoll
     container_name: viscoll-api
-    volumes:
-      - ./viscoll-api:/app
+    # volumes:
+    #   - ./viscoll-api:/app
     working_dir: /app
     command: bash -c "rm -f tmp/pids/server.pid && bundle i && bundle exec rails s -p 3001 -b '0.0.0.0'"
     ports:
@@ -16,11 +16,11 @@ services:
       - mongo-express
 
   app:
-    build: .
+    build: ./viscoll-app
     image: viscoll
     container_name: viscoll-app
-    volumes:
-      - ./viscoll-app:/app
+    # volumes:
+    #   - ./viscoll-app:/app
     working_dir: /app
     command: bash -c "npm install && npm start"
     ports:
