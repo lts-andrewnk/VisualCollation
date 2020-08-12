@@ -70,3 +70,4 @@ MAILER_DEFAULT_FROM=emeryr@upenn.edu
 MAILER_DOMAIN=localhost
 APPLICATION_HOST=localhost
 .env
+secrets_scan.json
