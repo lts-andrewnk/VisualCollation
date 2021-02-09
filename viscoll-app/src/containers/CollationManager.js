@@ -212,7 +212,7 @@ class CollationManager extends Component {
         this.setState(
             {export: {open, type, label, exportCols, exportTerms}},
             () => {
-                if (this.state.export.open && type !== 'png' && type !== 'share')
+                if (this.state.export.open && type !== 'share')
                     this.props.exportProject(this.props.project.id, type);
             }
         );
