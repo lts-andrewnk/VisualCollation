@@ -60,6 +60,9 @@ class ExportController < ApplicationController
           end
 
           render json: {data: exportData, type: @format, Images: {exportedImages:@zipFilePath ? @zipFilePath : false}}, status: :ok and return
+        when 'png'
+          exportData = 'PNG TEST'
+          render json: {data: exportData, type: @format, Images: {exportedImages:@zipFilePath ? @zipFilePath : false}}, status: :ok and return
         when 'formula'
           job_response = process_pipeline 'viscoll2formulas', xml.to_xml
 
