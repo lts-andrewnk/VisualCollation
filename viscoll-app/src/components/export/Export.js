@@ -19,20 +19,20 @@ const Export = props => {
     props.exportCols > 0 && props.exportCols <= props.numRootGroups;
 
   const actions = [
-    <FlatButton
-      label={'Download image'}
-      icon={<IconDownload />}
-      style={
-        props.exportedType === 'png' ? { marginRight: 10 } : { display: 'none' }
-      }
-      onClick={() => props.downloadImage()}
-      disabled={!isValidExport}
-    />,
+    // <FlatButton
+    //   label={'Download image'}
+    //   icon={<IconDownload />}
+    //   style={
+    //     props.exportedType === 'png' ? { marginRight: 10 } : { display: 'none' }
+    //   }
+    //   onClick={() => props.downloadImage()}
+    //   disabled={!isValidExport}
+    // />,
     <FlatButton
       label={'Download ' + props.exportedType}
       icon={<IconDownload />}
       style={
-        props.exportedImages && props.exportedType !== 'png'
+        props.exportedImages
           ? { marginRight: 10 }
           : { display: 'none' }
       }
