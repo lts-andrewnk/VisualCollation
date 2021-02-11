@@ -71,6 +71,8 @@ class ExportController < ApplicationController
           Zip::File.open(outfile) do |zip_file|
             zip_file.each do |entry|
               if File.extname(entry.name) === '.svg'
+                # convert svg to png here
+
                 exportData << entry.get_input_stream.read
               end
             end
