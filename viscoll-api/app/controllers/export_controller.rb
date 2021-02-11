@@ -1,4 +1,6 @@
 require 'zip'
+require 'RMagick'
+include 'Magick'
 
 class ExportController < ApplicationController
   before_action :authenticate!
@@ -72,8 +74,11 @@ class ExportController < ApplicationController
             zip_file.each do |entry|
               if File.extname(entry.name) === '.svg'
                 # convert svg to png here
-
-                exportData << entry.get_input_stream.read
+                svg_image = ImageList.new(entry.name)
+                png_image = svg_image.write("#{File.basename(entry.name, ".svg")}.png")
+                puts png_image
+                # how do we read the png stream back into the zip?
+                exportData << png_image.get_input_stream.read
               end
             end
           end
