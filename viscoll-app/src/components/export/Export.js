@@ -50,7 +50,7 @@ const Export = props => {
                     : {marginRight: 10}
             }
             onClick={() =>
-                fileDownload(props.exportedData, `${filename}.${props.exportedType}`)
+                downloadZip()
             }
         />,
         <FlatButton
