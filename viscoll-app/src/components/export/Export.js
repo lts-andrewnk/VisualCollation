@@ -45,7 +45,6 @@ const Export = props => {
             icon={<IconDownload/>}
             style={
                 props.exportedImages ||
-                props.exportedType === 'png' ||
                 props.exportedType === 'share'
                     ? {display: 'none'}
                     : {marginRight: 10}
