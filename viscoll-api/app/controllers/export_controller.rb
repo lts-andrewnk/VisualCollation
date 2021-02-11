@@ -61,7 +61,21 @@ class ExportController < ApplicationController
 
           render json: {data: exportData, type: @format, Images: {exportedImages:@zipFilePath ? @zipFilePath : false}}, status: :ok and return
         when 'png'
-          exportData = 'PNG TEST'
+          collation_file = 'collation.css'
+          config_xml = %Q{<config><css xml:id="css">#{collation_file}</css></config>}
+          job_response = process_pipeline 'viscoll2svg', xml.to_xml, config_xml
+          puts job_response.inspect
+          outfile = write_zip_file job_response, 'svg'
+          @zipFilePath = "#{@base_api_url}/transformations/zip/#{@project.id}-svg"
+          exportData = []
+          Zip::File.open(outfile) do |zip_file|
+            zip_file.each do |entry|
+              if File.extname(entry.name) === '.svg'
+                exportData<<entry.get_input_stream.read
+              end
+            end
+          end
+
           render json: {data: exportData, type: @format, Images: {exportedImages:@zipFilePath ? @zipFilePath : false}}, status: :ok and return
         when 'formula'
           job_response = process_pipeline 'viscoll2formulas', xml.to_xml
@@ -160,7 +174,6 @@ class ExportController < ApplicationController
     end
     response_hash = JSON.parse(xproc_response.body)
     
-    puts "response hash: #{response_hash}"
     # TODO: Xproc#retreive_data; returns IO object
     job_url = response_hash["_links"]["job"]["href"]
     job_uri = URI.parse job_url
