@@ -1,8 +1,9 @@
 require 'zip'
-require 'RMagick'
-include 'Magick'
+require 'rmagick'
 
 class ExportController < ApplicationController
+  include Magick
+
   before_action :authenticate!
   before_action :set_project, only: [:show]
 
@@ -74,11 +75,22 @@ class ExportController < ApplicationController
             zip_file.each do |entry|
               if File.extname(entry.name) === '.svg'
                 # convert svg to png here
-                svg_image = ImageList.new(entry.name)
+                # open entry
+                # convert entry to png
+                # save entry
+                # read input stream into exportdata
+                # svg_image = ImageList.new(entry.name)
+                svg_image = Magick::Image.from_blob(entry.get_input_stream.read) {
+                  self.format = 'SVG'
+                  self.background_color = 'transparent'
+                }
+                svg_image[0].to_blob {
+                  self.format = 'PNG'
+                }
                 png_image = svg_image.write("#{File.basename(entry.name, ".svg")}.png")
                 puts png_image
                 # how do we read the png stream back into the zip?
-                exportData << png_image.get_input_stream.read
+                exportData << entry.get_input_stream.read
               end
             end
           end
