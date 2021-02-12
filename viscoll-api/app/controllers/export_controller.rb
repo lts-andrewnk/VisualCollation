@@ -67,32 +67,18 @@ class ExportController < ApplicationController
           collation_file = 'collation.css'
           config_xml     = %Q{<config><css xml:id="css">#{collation_file}</css></config>}
           job_response   = process_pipeline 'viscoll2svg', xml.to_xml, config_xml
-          puts job_response.inspect
           outfile      = write_zip_file job_response, 'svg'
           @zipFilePath = "#{@base_api_url}/transformations/zip/#{@project.id}-svg"
           exportData   = []
           Zip::File.open(outfile) do |zip_file|
             zip_file.each do |entry|
               if File.extname(entry.name) === '.svg'
-                # convert svg to png here
-                # open entry
-                # convert entry to png
-                # save entry
-                # read input stream into exportdata
-                # svg_image = ImageList.new(entry.name)
-                svg_image = Magick::Image.from_blob(entry.get_input_stream.read) {
-                  self.format = 'SVG'
-                  self.background_color = 'transparent'
-                }
-                svg_image[0].to_blob {
-                  self.format = 'PNG'
-                }
-                png_image = svg_image.write("#{File.basename(entry.name, ".svg")}.png")
-                puts png_image
-                # how do we read the png stream back into the zip?
-                exportData << entry.get_input_stream.read
+                png = convert_svg_to_png(entry.get_input_stream.read)
+                exportData << png
               end
             end
+            zip_file.add(exportData.first, "#{test}.png")
+            zip_file.close
           end
 
           render json: { data: exportData, type: @format, Images: { exportedImages: @zipFilePath ? @zipFilePath : false } }, status: :ok and return
@@ -211,5 +197,15 @@ class ExportController < ApplicationController
       f.puts response.body
     end
     outfile
+  end
+
+  def convert_svg_to_png(str)
+    img, data = Magick::Image.from_blob(str) {
+      self.format = 'SVG'
+      self.background_color = 'transparent'
+    }
+    img.to_blob {
+      self.format = 'PNG'
+    }
   end
 end
