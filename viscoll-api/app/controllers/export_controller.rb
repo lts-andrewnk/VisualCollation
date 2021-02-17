@@ -68,18 +68,33 @@ class ExportController < ApplicationController
           config_xml     = %Q{<config><css xml:id="css">#{collation_file}</css></config>}
           job_response   = process_pipeline 'viscoll2svg', xml.to_xml, config_xml
           outfile      = write_zip_file job_response, 'svg'
-          @zipFilePath = "#{@base_api_url}/transformations/zip/#{@project.id}-svg"
+          @zipFilePath = "#{@base_api_url}/transformations/zip/#{@project.id}-png"
           exportData   = []
-          Zip::File.open(outfile) do |zip_file|
-            zip_file.each do |entry|
-              if File.extname(entry.name) === '.svg'
-                png = convert_svg_to_png(entry.get_input_stream.read)
-                exportData << png
+          # open zip output stream (so we can write to the zip)
+          Zip::OutputStream.write_buffer do |zio|
+            Zip::InputStream.open StringIO.new(job_response.body) do |zip_input|
+              while input_entry = zip_input.get_next_entry do
+                zio.put_next_entry input_entry.name
+                zio.write input_entry.read
+                if File.extname(input_entry.name) == '.svg'
+                  png = convert_svg_to_png(entry.get_input_stream.read)
+                  new_name = input_entry.name.sub(/\.svg$/, '.png')
+                  zio.put_next_entry new_name
+                  zio.write png
+                end
               end
             end
-            zip_file.add(exportData.first, "#{test}.png")
-            zip_file.close
           end
+          # Zip::File.open(outfile) do |zip_file|
+          #   zip_file.each do |entry|
+          #     if File.extname(entry.name) === '.svg'
+          #       png = convert_svg_to_png(entry.get_input_stream.read)
+          #       exportData << png
+          #     end
+          #   end
+          #   zip_file.add(exportData.first, "#{test}.png")
+          #   zip_file.close
+          # end
 
           render json: { data: exportData, type: @format, Images: { exportedImages: @zipFilePath ? @zipFilePath : false } }, status: :ok and return
         when 'formula'
