@@ -62,6 +62,7 @@ const Export = props => {
     ];
 
     const downloadZip = () => {
+        console.log(props.exportedImages)
         fetch(props.exportedImages)
             .then(function (response) {
                 if (response.status === 200 || response.status === 0) {
