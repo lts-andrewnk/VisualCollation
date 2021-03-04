@@ -38,6 +38,27 @@
         doctype-system="http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" standalone="no"
         xpath-default-namespace="http://www.w3.org/2000/svg" exclude-result-prefixes="xlink"
         include-content-type="no"/>
+    
+    <!--
+        CSS
+        ===
+
+        Get the location of the css file and read it into the $css variable.
+
+        Parameters and variables
+        ~~~~~~~~~~~~~~~~~~~~~~~~
+        `css-base`      path to the css file directory, relative to this file.
+        `job-base`    path to the job directory, for resolving job-specific resources
+        `css`           css text to be inserted in the output SVG
+        config.xml should have the following format, with an element with @xml:id='css'.
+        <config>
+          <css xml:id="css">collation2.css</css>
+        </config>
+        The content of the tag should be the name of a css file in the $css-base directory.
+    -->
+    <xsl:param name="css-base" select="'./'"/>
+    <xsl:param name="job-base" select="'./'"/>
+    <xsl:variable name="css" select="unparsed-text(concat($css-base, document(concat($job-base, 'config.xml#css'))))"/>
 
     <xd:doc>
         <xd:desc>
@@ -596,7 +617,7 @@
         <xd:param name="last">
             <xd:p>Last leaf in the gathering (that is not 'missing' or is not a stub).</xd:p>
         </xd:param>
-    <xd:param name="endOfLineX">
+        <xd:param name="endOfLineX">
             <xd:p>Parameter to store the end of line x value to write folio numbers (in R-L
                 direction).</xd:p>
         </xd:param>
@@ -688,7 +709,7 @@
                             <xsl:with-param name="text" select="0"/>
                             <xsl:with-param name="extraCentralSubquireLeft"
                                 select="$extraCentralSubquireLeft"/>
-                        <xsl:with-param name="endOfLineX" select="$endOfLineX"/>
+                            <xsl:with-param name="endOfLineX" select="$endOfLineX"/>
                         </xsl:call-template>
                         <!-- Call the template to draw the regular bifolia -->
                         <xsl:call-template name="bifoliaDiagram">
@@ -769,7 +790,7 @@
         <xd:param name="last">
             <xd:p>Last leaf in the gathering (that is not 'missing' or is not a stub).</xd:p>
         </xd:param>
-    <xd:param name="endOfLineX">
+        <xd:param name="endOfLineX">
             <xd:p>Parameter to store the end of line x value to write folio numbers (in R-L
                 direction).</xd:p>
         </xd:param>
@@ -937,7 +958,7 @@
             <xd:p>Parameter to check for subquires in the middle of the quire that belong to the
                 left half of the gathering.</xd:p>
         </xd:param>
-    <xd:param name="endOfLineX">
+        <xd:param name="endOfLineX">
             <xd:p>Parameter to store the end of line x value to write folio numbers (in R-L
                 direction).</xd:p>
         </xd:param>
@@ -998,8 +1019,8 @@
                             </xsl:otherwise>
                         </xsl:choose>
                     </xsl:variable>
-                <xsl:value-of select="
-                            concat('translate(', $gatheringNumberTranslation * $delta, ' ', if (xs:integer($extraCentralSubquireLeft) != 0) then
+                    <xsl:value-of select="
+                        concat('translate(', $gatheringNumberTranslation * $delta, ' ', if (xs:integer($extraCentralSubquireLeft) != 0) then
                                 $delta * ($extraCentralSubquireLeft)
                             else
                                 0, ')')"/>
@@ -1357,7 +1378,7 @@
         <xd:param name="direction">
             <xd:p>Writing direction.</xd:p>
         </xd:param>
-    <xd:param name="endOfLineX">
+        <xd:param name="endOfLineX">
             <xd:p>Parameter to store the end of line x value to write folio numbers (in R-L
                 direction).</xd:p>
         </xd:param>
@@ -1589,7 +1610,7 @@
                                         </xsl:text>
                                     <xsl:value-of
                                         select="$Cx + ($delta * $countRegularBifolia) - 2 - ($delta - 1 + ($followingRegularComponents * $delta)) + $doublePathDisplacementValue"/>
-                                <xsl:text>,</xsl:text>
+                                    <xsl:text>,</xsl:text>
                                     <xsl:value-of select="$Cy"/>
                                 </xsl:attribute>
                             </path>
@@ -2165,7 +2186,7 @@
         <xd:param name="last">
             <xd:p>Last leaf in the gathering (that is not 'missing' or is not a stub).</xd:p>
         </xd:param>
-    <xd:param name="endOfLineX">
+        <xd:param name="endOfLineX">
             <xd:p>Parameter to store the end of line x value to write folio numbers (in R-L
                 direction).</xd:p>
         </xd:param>
@@ -2611,7 +2632,7 @@
         <xd:param name="direction">
             <xd:p>Writing direction.</xd:p>
         </xd:param>
-    <xd:param name="endOfLineX">
+        <xd:param name="endOfLineX">
             <xd:p>Parameter to store the end of line x value to write folio numbers (in R-L
                 direction).</xd:p>
         </xd:param>
@@ -3213,7 +3234,7 @@
         <xd:param name="direction">
             <xd:p>Writing direction.</xd:p>
         </xd:param>
-    <xd:param name="endOfLineX">
+        <xd:param name="endOfLineX">
             <xd:p>Parameter to store the end of line x value to write folio numbers (in R-L
                 direction).</xd:p>
         </xd:param>
