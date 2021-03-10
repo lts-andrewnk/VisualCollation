@@ -99,16 +99,6 @@ class ExportController < ApplicationController
               end
             end
           end
-          # Zip::File.open(outfile) do |zip_file|
-          #   zip_file.each do |entry|
-          #     if File.extname(entry.name) === '.svg'
-          #       png = convert_svg_to_png(entry.get_input_stream.read)
-          #       exportData << png
-          #     end
-          #   end
-          #   zip_file.add(exportData.first, "#{test}.png")
-          #   zip_file.close
-          # end
 
           render json: { data: exportData, type: @format, Images: { exportedImages: @zipFilePath ? @zipFilePath : false } }, status: :ok and return
         when 'formula'
