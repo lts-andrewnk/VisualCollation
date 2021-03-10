@@ -79,22 +79,22 @@ class ExportController < ApplicationController
                 zio.put_next_entry input_entry.name
                 zio.write input_entry.get_input_stream.read
                 if File.extname(input_entry.name) == '.svg'
-                  # use SecureRandom to prevent file name collisions
-                  out_svg = File.join Dir.tmpdir, "#{File.basename(input_entry.name)}-#{SecureRandom.hex 5}.svg"
+                  # use SecureRandom to prevent file name collisions;
+                  #  e.g., MST1-1.svg => MST1-1.svg-d40498e50a.svg, MST1-1.svg-d40498e50a.svg.png
+                  tmp_svg = File.join Dir.tmpdir, "#{File.basename(input_entry.name)}-#{SecureRandom.hex 5}.svg"
+                  tmp_png = "#{tmp_svg}.png"
 
                   # write the svg to disk
-                  File.open(out_svg, 'w+') { |f| f.puts input_entry.get_input_stream.read }
-                  # use SecureRandom to prevent file name collisions
-                  png = File.join Dir.tmpdir, "#{File.basename(input_entry.name, '.svg')}-#{SecureRandom.hex 5}.png"
-                  system "rsvg-convert -w 1024 #{out_svg} > #{png}"
+                  File.open(tmp_svg, 'w+') { |f| f.puts input_entry.get_input_stream.read }
+                  system "rsvg-convert -w 1024 #{tmp_svg} > #{tmp_png}"
 
                   # the png has the same name as the svg
-                  new_name = input_entry.name.sub /\.svg$/, '.png'
-                  zio.put_next_entry new_name
-                  zio.write open(png, 'rb').read
+                  png_name = input_entry.name.sub /\.svg$/, '.png'
+                  zio.put_next_entry png_name
+                  zio.write open(tmp_png, 'rb').read
 
                   # clean up
-                  FileUtils.rm [out_svg, png]
+                  FileUtils.rm_f [tmp_svg, tmp_png]
                 end
               end
             end
