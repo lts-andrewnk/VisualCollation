@@ -2,7 +2,6 @@ require 'zip'
 require 'securerandom'
 
 class ExportController < ApplicationController
-  include Magick
 
   before_action :authenticate!
   before_action :set_project, only: [:show]
@@ -216,15 +215,5 @@ class ExportController < ApplicationController
       f.puts response.body
     end
     outfile
-  end
-
-  def convert_svg_to_png(str)
-    img, data = Magick::Image.from_blob(str) {
-      self.format = 'SVG'
-      self.background_color = 'transparent'
-    }
-    img.to_blob {
-      self.format = 'PNG'
-    }
   end
 end
