@@ -67,12 +67,12 @@ class ExportController < ApplicationController
           config_xml     = %Q{<config><css xml:id="css">#{collation_file}</css></config>}
           job_response   = process_pipeline 'viscoll2svg', xml.to_xml, config_xml
           # outfile      = write_zip_file job_response, 'png'
-          outfile = "#{Rails.root}/public/xproc/#{@project.id}-png.zip"
+          outfile      = "#{Rails.root}/public/xproc/#{@project.id}-png.zip"
           @zipFilePath = "#{@base_api_url}/transformations/zip/#{@project.id}-png"
           exportData   = []
           # open zip output stream (so we can write to the zip)
           Zip::OutputStream.open(outfile) do |zio|
-          # Zip::OutputStream.write_buffer do |zio|
+            # Zip::OutputStream.write_buffer do |zio|
             Zip::File.open_buffer StringIO.new(job_response.body).read do |zip_input|
               zip_input.each do |input_entry|
                 zio.put_next_entry input_entry.name
