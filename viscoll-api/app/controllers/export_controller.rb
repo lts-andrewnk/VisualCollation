@@ -1,5 +1,5 @@
 require 'zip'
-require 'rmagick'
+require 'securerandom'
 
 class ExportController < ApplicationController
   include Magick
@@ -79,10 +79,22 @@ class ExportController < ApplicationController
                 zio.put_next_entry input_entry.name
                 zio.write input_entry.get_input_stream.read
                 if File.extname(input_entry.name) == '.svg'
-                  png = convert_svg_to_png(input_entry.get_input_stream.read)
-                  new_name = input_entry.name.sub(/\.svg$/, '.png')
+                  # use SecureRandom to prevent file name collisions
+                  out_svg = File.join Dir.tmpdir, "#{File.basename(input_entry.name)}-#{SecureRandom.hex 5}.svg"
+
+                  # write the svg to disk
+                  File.open(out_svg, 'w+') { |f| f.puts input_entry.get_input_stream.read }
+                  # use SecureRandom to prevent file name collisions
+                  png = File.join Dir.tmpdir, "#{File.basename(input_entry.name, '.svg')}-#{SecureRandom.hex 5}.png"
+                  system "rsvg-convert -w 1024 #{out_svg} > #{png}"
+
+                  # the png has the same name as the svg
+                  new_name = input_entry.name.sub /\.svg$/, '.png'
                   zio.put_next_entry new_name
-                  zio.write png
+                  zio.write open(png, 'rb').read
+
+                  # clean up
+                  FileUtils.rm [out_svg, png]
                 end
               end
             end
