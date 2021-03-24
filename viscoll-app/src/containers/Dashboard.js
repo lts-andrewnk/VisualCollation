@@ -188,7 +188,7 @@ class Dashboard extends Component {
           showUndoRedo={this.state.page==="image"}
         >
           <Tabs tabItemContainerStyle={{backgroundColor: '#ffffff'}}>
-            <Tab tabIndex={-1} label="List view" buttonStyle={topbarStyle().tab} />
+            <Tab tabIndex={-1} label="List view (test)" buttonStyle={topbarStyle().tab} />
           </Tabs>
         </TopBar>
         {sidebar}
