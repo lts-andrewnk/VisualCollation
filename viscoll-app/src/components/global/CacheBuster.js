@@ -42,8 +42,8 @@ class CacheBuster extends React.Component {
         fetch('/meta.json')
             .then((response) => response.json())
             .then((meta) => {
-                const latestVersion = meta.version;
-                const currentVersion = global.appVersion;
+                const latestVersion = meta.version; // from latest build
+                const currentVersion = global.appVersion; //cached browser version
 
                 const shouldForceRefresh = semverGreaterThan(latestVersion, currentVersion);
                 if (shouldForceRefresh) {
