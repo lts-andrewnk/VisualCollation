@@ -90,7 +90,7 @@
     </xd:doc>
     <xsl:variable name="doublePaths">
         <xsl:choose>
-            <xsl:when test="//taxonomy/term/'hairside' or 'fleshside'">
+            <xsl:when test="boolean(//taxonomy/term/'hairside' or //taxonomy/term/'fleshside')">
                 <xsl:value-of select="1"/>
             </xsl:when>
             <xsl:otherwise>
@@ -1448,7 +1448,7 @@
             <xsl:value-of select="./q[1]/@position"/>
         </xsl:variable>
         <xsl:variable name="precPos">
-            <xsl:value-of select="preceding-sibling::leaf[1]/q[1]/@position"/>
+            <xsl:value-of select="preceding-sibling::leaf[1]/q[1][@n = $gatheringNumber]/@position"/>
         </xsl:variable>
         <!-- The line length varies to accommodate the stub for a singleton with the same position of a stub -->
         <xsl:variable name="lineLength">
@@ -1833,12 +1833,11 @@
                                                   <xsl:value-of
                                                   select="$posNextRegularLeaf - $ownPosition"/>
                                                   </xsl:variable>
-                                                  <xsl:value-of
-                                                  select="
+                                                  <xsl:value-of select="
                                                                     $Cy + $parametricY + ($delta div 2) + $delta * (if (xs:integer($difference) eq 1) then
                                                                         0
                                                                     else
-                                                                        xs:integer($difference))"
+                                                                        xs:integer($difference)-1)"
                                                   />
                                                   </xsl:when>
                                                   <xsl:when
@@ -1870,12 +1869,11 @@
                                                   <xsl:value-of
                                                   select="$ownPosition - $posPreviousRegularLeaf"/>
                                                   </xsl:variable>
-                                                  <xsl:value-of
-                                                  select="
+                                                  <xsl:value-of select="
                                                                     $Cy + $parametricY - ($delta div 2) + $delta * (if (xs:integer($difference) eq 1) then
                                                                         0
                                                                     else
-                                                                        xs:integer($difference))"
+                                                                        xs:integer($difference)-1)"
                                                   />
                                                   </xsl:when>
                                                   </xsl:choose>
