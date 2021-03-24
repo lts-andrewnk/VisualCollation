@@ -341,6 +341,9 @@
                             <optional>
                                 <ref name="target"/>
                             </optional>
+                            <optional>                                
+                                <ref name="certainty"/>
+                            </optional>
                             <element>
                                 <name>term</name>
                                 <ref name="target"/>
