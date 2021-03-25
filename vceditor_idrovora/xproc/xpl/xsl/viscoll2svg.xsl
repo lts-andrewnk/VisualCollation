@@ -703,9 +703,6 @@
                         <!-- Rotate diagrams if r-l -->
                         <xsl:call-template name="writingDirRotation">
                             <xsl:with-param name="direction" select="$direction"/>
-                            <xsl:with-param name="countRegularBifolia" select="$countRegularBifolia"/>
-                            <xsl:with-param name="leafLength" select="$leafLength"/>
-                            <xsl:with-param name="Cx" select="$CxMain"/>
                             <xsl:with-param name="text" select="0"/>
                             <xsl:with-param name="extraCentralSubquireLeft"
                                 select="$extraCentralSubquireLeft"/>
@@ -965,9 +962,6 @@
     </xd:doc>
     <xsl:template name="writingDirRotation">
         <xsl:param name="direction"/>
-        <xsl:param name="Cx"/>
-        <xsl:param name="leafLength"/>
-        <xsl:param name="countRegularBifolia"/>
         <xsl:param name="text" select="0"/>
         <xsl:param name="extraCentralSubquireLeft" as="xs:integer" select="0"/>
         <xsl:param name="endOfLineX"/>
@@ -1070,7 +1064,6 @@
     <xsl:template name="conjoinPosition">
         <xsl:param name="test"/>
         <xsl:param name="conjoinPos"/>
-        <!-- if there is a conjoined leaf, then the position is returned, otherwise 0 -->
         <xsl:choose>
             <xsl:when test="$test">
                 <xsl:value-of select="$conjoinPos"/>
@@ -1700,6 +1693,9 @@
                         <!-- This draws the folio. When double paths are needed to encode visualizations for leaf sides, this draws
                             the left side or right side depending on the position of the leaf (left or right of the centre)-->
                         <xsl:call-template name="linepaths">
+                            <xsl:with-param name="folioID" select="$folioID"/>
+                            <xsl:with-param name="linePath" select="$linePath"/>
+                            <xsl:with-param name="folioMode" select="$folioMode"/>
                             <xsl:with-param name="Q1_SQ2" select="1"/>
                         </xsl:call-template>
                         <!-- When double paths are needed to encode visualizations for leaf sides, this draws
@@ -1842,17 +1838,6 @@
                                                   </xsl:when>
                                                   <xsl:when
                                                   test="xs:integer($leafPosition) gt ($centralLeftLeafPos + 1)">
-                                                  <!--<xsl:value-of
-                                                  select="
-                                                                    $Cy + $parametricY + ((if (xs:integer($left1_Right2) eq 1) then
-                                                                        1
-                                                                    else
-                                                                        -1) * ($delta)) - ($delta div 2) + ($delta * $followingComponents)"
-                                                  />-->
-                                                  <!--<xsl:value-of
-                                                  select="
-                                                                    $Cy + $parametricY - ($delta div 2)"
-                                                  />-->
                                                   <xsl:variable name="ownPosition">
                                                   <xsl:value-of select="parent::leaf/q[1]/@position"
                                                   />
@@ -2391,6 +2376,7 @@
                     <xsl:with-param name="countRegularBifolia2" select="$countRegularBifolia2"/>
                     <xsl:with-param name="countSubquireLeaves" select="$countSubquireLeaves"/>
                     <xsl:with-param name="NSubquires" select="$NSubquires" as="xs:integer"/>
+                <xsl:with-param name="endOfLineX" select="$endOfLineX"/>
                 </xsl:call-template>
             </xsl:when>
         </xsl:choose>
@@ -3020,6 +3006,9 @@
                         <!-- This draws the folio. When double paths are needed to encode visualizations for leaf sides, this draws
                             the left side or right side depending on the position of the leaf (left or right of the centre)-->
                         <xsl:call-template name="linepaths">
+                            <xsl:with-param name="folioID" select="$folioID"/>
+                            <xsl:with-param name="linePath" select="$linePath_SQ"/>
+                            <xsl:with-param name="folioMode" select="$folioMode"/>
                             <xsl:with-param name="Q1_SQ2" select="2"/>
                         </xsl:call-template>
                         <!-- When double paths are needed to encode visualizations for leaf sides, this draws

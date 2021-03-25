@@ -41,10 +41,17 @@ const Export = props => {
             }}
         />,
         <FlatButton
+            label={"Download " + props.exportedType}
+            icon={<IconDownload />}
+            style={props.exportedType==="xml"?{marginRight:10}:{display:"none"}}
+            onClick={()=>fileDownload(props.exportedData, `${filename}.${props.exportedType}`)}
+        />,
+        <FlatButton
             label={'Download ' + props.exportedType}
             icon={<IconDownload/>}
             style={
                 props.exportedImages ||
+                props.exportedType === 'xml' ||
                 props.exportedType === 'share'
                     ? {display: 'none'}
                     : {marginRight: 10}
