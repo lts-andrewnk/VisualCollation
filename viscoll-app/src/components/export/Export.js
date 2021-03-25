@@ -8,26 +8,11 @@ import IconDownload from 'material-ui/svg-icons/file/file-download';
 import IconButton from 'material-ui/IconButton';
 import JSZip from 'jszip';
 import saveAs from 'file-saver';
-import TextField from 'material-ui/TextField';
-import Checkbox from 'material-ui/Checkbox';
 
 /** Dialog to export collation to JSON, XML or PNG */
 const Export = props => {
     const filename = props.projectTitle.replace(/\s/g, '_');
-
-    const isValidExport =
-        props.exportCols > 0 && props.exportCols <= props.numRootGroups;
-
     const actions = [
-        // <FlatButton
-        //   label={'Download image'}
-        //   icon={<IconDownload />}
-        //   style={
-        //     props.exportedType === 'png' ? { marginRight: 10 } : { display: 'none' }
-        //   }
-        //   onClick={() => props.downloadImage()}
-        //   disabled={!isValidExport}
-        // />,
         <FlatButton
             label={'Download ' + props.exportedType}
             icon={<IconDownload/>}
