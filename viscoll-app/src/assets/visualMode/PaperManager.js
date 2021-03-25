@@ -188,9 +188,6 @@ PaperManager.prototype = {
                     leaf.deactivate();
                 }
             } else if (memberID.charAt(0) === 'G') {
-                const subGroup = this.getGroup(
-                    this.groupIDs.indexOf(this.Groups[memberID].id) + 1
-                );
                 this.tacketTargetLeaves(memberID, targets)
             }
         })
