@@ -36,7 +36,7 @@ class ExportController < ApplicationController
     begin
       exportData = buildDotModel(@project)
       xml        = Nokogiri::XML(exportData)
-      schema     = Nokogiri::XML::RelaxNG(File.open("public/viscoll-datamodel81120.rng"))
+      schema     = Nokogiri::XML::RelaxNG(File.open("public/viscoll-datamodel2.0.rng"))
       errors     = schema.validate(xml)
 
       if errors.empty?
