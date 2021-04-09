@@ -1,6 +1,6 @@
 ## Introduction
 
-VisCodex is for building models of the physical collation of manuscripts, and then visualizing them in various ways. The VisCodex project is led by Dot Porter at the [Schoenberg Institute for Manuscript Studies](https://schoenberginstitute.org/) at the University of Pennsylvania, in collaboration with the [University of Toronto Libraries](https://onesearch.library.utoronto.ca/about) and the [Old Books New Science lab](https://oldbooksnewscience.com/). Collaborators include Alexandra Gillespie, Alberto Campagnolo, and Conal Tuohy.
+VCEditor is for building models of the physical collation of manuscripts, and then visualizing them in various ways. The VCEditor project is led by Dot Porter at the [Schoenberg Institute for Manuscript Studies](https://schoenberginstitute.org/) at the University of Pennsylvania and Alberto Campagnolo. VCEditor is built on code developed by the [University of Toronto Libraries](https://onesearch.library.utoronto.ca/about) and the [Old Books New Science lab](https://oldbooksnewscience.com/), under the direction of Alexandra Gillespie.
 
 ## System Requirements
 
