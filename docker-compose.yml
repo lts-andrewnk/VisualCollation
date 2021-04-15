@@ -25,7 +25,7 @@ services:
       labels:
         - "traefik.enable=true"
         - "traefik.http.routers.staging-app.rule=Host(`${PROJECT_URL}`)"
-        - "traefik.http.routers.staging-app.entrypoints=web"
+        - "traefik.http.routers.staging-app.entrypoints=production"
         - "traefik.http.services.staging-app.loadbalancer.server.port=3000"
     networks:
       - internal
@@ -40,17 +40,25 @@ services:
 
   xproc:
     image: "quay.io/upennlibraries/vceditor_idrovora:${RELEASE_TAG}"
-    command: ["--http", "2000",
-              "--http-context-path", "/xproc",
-              "--http-doc-root", "/docs",
-              "--http-cleanup-schedule", "0 0 * * * ?",
-              "--http-job-max-age", "PT168H",
-              "/xpl"]
+    command:
+      [
+        "--http",
+        "2000",
+        "--http-context-path",
+        "/xproc",
+        "--http-doc-root",
+        "/docs",
+        "--http-cleanup-schedule",
+        "0 0 * * * ?",
+        "--http-job-max-age",
+        "PT168H",
+        "/xpl",
+      ]
     deploy:
       labels:
         - "traefik.enable=true"
         - "traefik.http.routers.staging-xproc.rule=Host(`${PROJECT_URL}`) && PathPrefix(`/xproc`)"
-        - "traefik.http.routers.staging-xproc.entrypoints=web"
+        - "traefik.http.routers.staging-xproc.entrypoints=production"
         - "traefik.http.services.staging-xproc.loadbalancer.server.port=2000"
     networks:
       - internal

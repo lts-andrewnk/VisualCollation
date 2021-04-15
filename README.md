@@ -58,23 +58,30 @@ Before running the project you will need to set the environment variable `PROJEC
 docker stack deploy -c docker-compose.yml viscoll
 ```
 
+There is an additional file, `docker-compose.generic.yml`, which can be used to spin up an instance and connect it to a specific Traefik entrypoint using the environment variable `INSTANCE`. For example, to run an instance called "production" that is tied to the `production` entrypoint you would run:
+
+```
+docker stack deploy -c docker-compose.traefik.yml traefik
+PROJECT_URL=localhost RELEASE_TAG=development INSTANCE=production docker stack deploy -c docker-compose.generic.yml viscoll
+```
+
 #### Other required environment variables
 
 Set in the ENV the following:
 
-* `MAILER_USR` -- the SMTP account to use (if needed)
-* `MAILER_PWD` -- the password of of the SMTP account (if needed)
-* `MAILER_DEFAULT_FROM` -- the default mail from account
-* `MAILER_HOST` -- the SMTP host
-* `MAILER_DOMAIN` -- the application host (e.g., `my-app.com`)
-* `PROJECT_URL` -- the application host; used by Traefik
-* `RELEASE_TAG` -- the release tag of the docker image (e.g., `lastest`)
-* `ADMIN_EMAIL` -- the mailto address for admin emails
-* `APPLICATION_HOST` -- the application host; used by VCEditor
-* `SECRET_KEY_BASE` -- the Rails secret key base (production and staging environments)
-* `RAILS_ENV` -- 'production', use only if deploying to staging or production
-                  environments
-* `XPROC_URL` -- full URL to the xproc service; e.g., `http://host.com:<PORT>`
+- `MAILER_USR` -- the SMTP account to use (if needed)
+- `MAILER_PWD` -- the password of of the SMTP account (if needed)
+- `MAILER_DEFAULT_FROM` -- the default mail from account
+- `MAILER_HOST` -- the SMTP host
+- `MAILER_DOMAIN` -- the application host (e.g., `my-app.com`)
+- `PROJECT_URL` -- the application host; used by Traefik
+- `RELEASE_TAG` -- the release tag of the docker image (e.g., `lastest`)
+- `ADMIN_EMAIL` -- the mailto address for admin emails
+- `APPLICATION_HOST` -- the application host; used by VCEditor
+- `SECRET_KEY_BASE` -- the Rails secret key base (production and staging environments)
+- `RAILS_ENV` -- 'production', use only if deploying to staging or production
+  environments
+- `XPROC_URL` -- full URL to the xproc service; e.g., `http://host.com:<PORT>`
 
 In development set environment in `.docker-environment-dev`. See the `docker-environment-dev-sample` file for a template.
 
